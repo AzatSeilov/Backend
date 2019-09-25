@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	
+<style type="text/css">
+	form{
+		text-align: center;
+		margin:10px;
+	}
+	input{
+		padding: 10px;
+		margin: 10px;
+	}
+</style>
+</head>
+
+<body>
+<?php
+	$dbhost = 'localhost';
+         $dbuser = 'root';
+         $dbpass = '';
+         $conn = mysqli_connect($dbhost, $dbuser, $dbpass, 'users');
+   
+         if(! $conn ){
+            die('Could not connect: ' . mysqli_error());
+         }
+         if (isset($_GET['create'])) {
+            $sql = "INSERT INTO user 
+          VALUES (NULL, '".$_GET['name']."','".$_GET['surname']."','".$_GET['email']."')";
+          $result = mysqli_query($conn, $sql);
+         }
+        $sql = "SELECT * FROM user";
+        $result = mysqli_query($conn,$sql);
+        $length = mysqli_num_rows($result);
+      
+	// echo "Hello";
+?>
+</body>
+
+	
+	<table border="1"> 
+		<tr>
+			<th>Id</th>
+			<th>Name</th>
+			<th>Surname</th>
+			<th>Email</th>
+		</tr>
+
+		<?php
+        
+        for($i=0; $i<$length;$i++){
+            $row = mysqli_fetch_assoc($result);
+            print '<tr>
+			<td>'.$row['id'].'</td>
+			<td>'.$row['name'].'</td>
+			<td>'.$row['surname'].'</td>
+			<td>'.$row['email'].'</td>
+		</tr>';
+    }
+        
+mysqli_close($conn);
+?>
+
+
+	</table>
+
+	<form action="" method="get">
+
+		<input type="text" name="name" placeholder="Enter name"></br>
+		<input type="text" name="surname" placeholder="Surname"></br>
+		<input type="email" name="email" placeholder="Email"></br>
+		
+		<input type="submit" name="create" value="Create">
+		<input type="submit" value="Update" name="update">
+		
+	</form>
+</html
